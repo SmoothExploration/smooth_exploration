@@ -1,3 +1,5 @@
+**OLD - NEEDS TO BE UPDATED FOR CLASS BASED  VERSION**
+
 **CMPUT366/609 - RLGlue README.md**
 ====================
 
