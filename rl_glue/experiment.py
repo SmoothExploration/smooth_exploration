@@ -9,6 +9,7 @@
   Experiment runs 2000 runs, each 1000 steps, of an n-armed bandit problem
 """
 
+from __future__ import print_function
 from rl_glue import RLGlue  # Required for RL-Glue
 rl_glue = RLGlue("simple_env", "simple_agent")
 
