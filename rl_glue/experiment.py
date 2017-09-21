@@ -11,7 +11,7 @@
 
 from __future__ import print_function
 from rl_glue import RLGlue  # Required for RL-Glue
-rl_glue = RLGlue("simple_env", "simple_agent")
+rl_glue = RLGlue("environment", "agent")
 
 import numpy as np
 import sys

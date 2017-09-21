@@ -6,14 +6,16 @@
 
 """
 
-from environment import Environment
-from agent import Agent
+from __future__ import print_function
+from importlib import import_module
 
 class RLGlue:
 
     def __init__(self, env_name, agent_name):
-        self.environment = Environment()
-        self.agent = Agent()
+        self.environment = import_module(env_name).Environment()
+        self.agent = import_module(agent_name).Agent()
+        # self.environment = Environment()
+        # self.agent = Agent()
 
         self.total_reward = None
         self.last_action = None

@@ -8,6 +8,7 @@
  
 """
 
+from __future__ import print_function
 from utils import rand_in_range
 import numpy as np
 

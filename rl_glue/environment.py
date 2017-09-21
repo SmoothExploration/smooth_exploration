@@ -7,6 +7,7 @@
   env *ignores* actions: rewards are all random
 """
 
+from __future__ import print_function
 from utils import rand_norm, rand_in_range, rand_un
 import numpy as np
 
