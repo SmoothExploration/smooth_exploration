@@ -5,17 +5,28 @@
 
 import numpy.random as rnd
 
-def rand_in_range(max): # returns integer, max: integer
-    return rnd.randint(max)
 
-def rand_un(): # returns floating point
+def rand_in_range(upper):
+    """Returns a random integer in [0, upper).
+    """
+    return rnd.randint(upper)
+
+
+def rand_un():
+    """Returns a random float in [0, 1).
+    """
     return rnd.uniform()
 
-def rand_norm (mu, sigma): # returns floating point, mu: floating point, sigma: floating point
+
+def rand_norm(mu, sigma):
+    """Returns a random float drawn from a normal distribution.
+
+    Args:
+        mu (float): Mean of the distribution.
+        sigma (float): Standard deviation of the distribution.
+    """
     return rnd.normal(mu, sigma)
-    
-def randInRange(max): # returns integer, max: integer # added for backwards combatibility; same as rand_in_range above
-    return rnd.randint(max)
-    
-def randn (mu, sigma): # returns floating point, mu: floating point, sigma: floating point # added for backwards combatibility; same as rand_norm above
-    return rnd.normal(mu, sigma)
+
+
+randInRange = rand_in_range
+randn = rand_norm
