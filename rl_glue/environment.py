@@ -12,7 +12,7 @@ from utils import rand_norm, rand_in_range, rand_un
 import numpy as np
 
 class Environment:
-     """Implements the environment for an RLGlue environment
+    """Implements the environment for an RLGlue environment
 
     Note:
         env_init, env_start, env_step, env_cleanup, and env_message are required methods
