@@ -6,49 +6,53 @@
   Last Modified by: Andrew Jacobsen, Victor Silva, Mohammad M. Ajallooeian
   Last Modified on: 16/9/2017
 
-  Experiment runs 2000 runs, each 1000 steps, of an n-armed bandit problem
+    An abstract class that specifies the Experiment API for RL-Glue-py.
 """
 
 from __future__ import print_function
-from rl_glue import RLGlue  # Required for RL-Glue
-rl_glue = RLGlue("environment", "agent")
-
-import numpy as np
 import sys
 
-def save_results(data, data_size, filename): # data: floating point, data_size: integer, filename: string
+from rl_glue import RLGlue  # Required for RL-Glue
+import agent
+import environment
+
+
+def save_results(data, data_size, filename):
+    # data: floating point, data_size: integer, filename: string
     with open(filename, "w") as data_file:
         for i in range(data_size):
             data_file.write("{0}\n".format(data[i]))
 
-if __name__ == "__main__":
-    num_runs = 2000
+
+def main():
+    env_class = environment.ExampleEnvironment
+    agent_class = agent.ExampleAgent
+    rl_glue = RLGlue(env_class, agent_class)
+
+    num_episodes = 2000
     max_steps = 1000
 
-    # array to store the results of each step
-    optimal_action = np.zeros(max_steps)
+    print("\tPrinting one dot for every run: {}".format(num_episodes),
+          end=' ')
+    print("total runs to complete.")
 
-    print("\nPrinting one dot for every run: {0} total Runs to complete".format(num_runs))
-    for k in range(num_runs):
+    optimal_action = [0 for _ in range(max_steps)]
+
+    for i in range(num_episodes):
         rl_glue.rl_init()
-
         rl_glue.rl_start()
-        for i in range(max_steps):
-            # RL_step returns (reward, state, action, is_terminal); we need only the
-            # action in this problem
-            action = rl_glue.rl_step()[2]
-
-            '''
-            check if action taken was optimal
-
-            you need to get the optimal action; see the news/notices
-            announcement on eClass for how to implement this
-            '''
-            # update your optimal action statistic here
+        for j in range(max_steps):
+            reward, state, action, is_terminal = rl_glue.rl_step()
+            optimal_action[j] += 1 if "action is optimal" else 0
 
         rl_glue.rl_cleanup()
         print(".", end='')
         sys.stdout.flush()
 
-    save_results(optimal_action / num_runs, max_steps, "RL_EXP_OUT.dat")
+    prop_optimal = [num_optimal / num_episodes for num_optimal in optimal_action]
+    save_results(prop_optimal, max_steps, "RL_EXP_OUT.dat")
     print("\nDone")
+
+
+if __name__ == "__main__":
+    main()
