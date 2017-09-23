@@ -1,4 +1,9 @@
-.idea/
+sphinx
+RL_EXP_OUT.dat
+*.idea*
+*.DS_Store*
+sphinx/source/pyrst/*
+sphinx/build
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

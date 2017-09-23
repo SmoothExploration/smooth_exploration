@@ -7,7 +7,7 @@
 """
 
 from __future__ import print_function
-from importlib import import_module
+
 
 class RLGlue:
     """RLGlue class
@@ -17,9 +17,9 @@ class RLGlue:
         agent_name (string): the name of the module where the Agent class can be found
     """
 
-    def __init__(self, env_name, agent_name):
-        self.environment = import_module(env_name).Environment()
-        self.agent = import_module(agent_name).Agent()
+    def __init__(self, env_class, agent_class):
+        self.environment = env_class()
+        self.agent = agent_class()
 
         self.total_reward = None
         self.last_action = None
@@ -39,10 +39,8 @@ class RLGlue:
         """Starts RLGlue experiment
 
         Returns:
-            tuple: (Numpy array, Numpy array)
+            tuple: (state, action)
         """
-        total_reward = 0.0;
-        num_steps = 1;
 
         last_state = self.environment.env_start()
         self.last_action = self.agent.agent_start(last_state)
@@ -52,13 +50,13 @@ class RLGlue:
         return observation
 
     def rl_agent_start(self, observation):
-        """Starts the agent
+        """Starts the agent.
 
         Args:
-            observation (Numpy array): the first observation from the environment
+            observation: The first observation from the environment
 
         Returns:
-            Numpy array: the action taken by the agent
+            The action taken by the agent.
         """
         return self.agent.agent_start(observation)
 
@@ -66,11 +64,13 @@ class RLGlue:
         """Step taken by the agent
         
         Args:
-            reward (float): the last reward the agent recieved for taking the last action
-            observation (Numpy array): the state observation the agent recieves from the environment
+            reward (float): the last reward the agent received for taking the
+                last action.
+            observation : the state observation the agent receives from the
+                environment.
 
         Returns:
-            Numpy array: the action taken by the agent
+            The action taken by the agent.
         """
         return self.agent.agent_step(reward, observation)
 
@@ -83,10 +83,11 @@ class RLGlue:
         self.agent.agent_end(reward)
 
     def rl_env_start(self):
-        """Starts RLGlue environement
+        """Starts RL-Glue environment.
         
         Returns:
-            (float, Numpy array, Boolean): reward, state observation, boolean indicating termination
+            (float, state, Boolean): reward, state observation, boolean
+                indicating termination
         """
         self.total_reward = 0.0
         self.num_steps = 1
@@ -99,17 +100,18 @@ class RLGlue:
         """Step taken by the environment based on action from agent
 
         Args:
-            action (Numpy array): action taken by agent
+            action: Action taken by agent.
         
         Returns:
-            (float, Numpy array, Boolean): reward, state observation, boolean indicating termination
+            (float, state, Boolean): reward, state observation, boolean
+                indicating termination.
         """
         ro = self.environment.env_step(action)
         (this_reward, _, terminal) = ro
 
         self.total_reward += this_reward
 
-        if terminal == True:
+        if terminal:
             self.num_episodes += 1
         else:
             self.num_steps += 1
@@ -117,28 +119,30 @@ class RLGlue:
         return ro
 
     def rl_step(self):
-        """Step taken by RLGlue, takes environement step and either step or end by agent
+        """Step taken by RLGlue, takes environment step and either step or
+            end by agent.
 
         Returns:
-            (float, Numpy array, Numpy array, Boolean): reward, last state observation, last action, boolean indicating termination
+            (float, state, action, Boolean): reward, last state observation,
+                last action, boolean indicating termination
         """
-        (this_reward, last_state, terminal) = self.environment.env_step(self.last_action)
+        (reward, last_state, term) = self.environment.env_step(self.last_action)
 
-        self.total_reward += this_reward;
+        self.total_reward += reward;
 
-        if terminal == True:
+        if term:
             self.num_episodes += 1
-            self.agent.agent_end(this_reward)
-            roa = (this_reward, last_state, None, terminal)
+            self.agent.agent_end(reward)
+            roat = (reward, last_state, None, term)
         else:
             self.num_steps += 1
-            self.last_action = self.agent.agent_step(this_reward, last_state)
-            roa = (this_reward, last_state, self.last_action, terminal)
+            self.last_action = self.agent.agent_step(reward, last_state)
+            roat = (reward, last_state, self.last_action, term)
 
-        return roa
+        return roat
 
     def rl_cleanup(self):
-        """Cleanup done at end of experiment"""
+        """Cleanup done at end of experiment."""
         self.environment.env_cleanup()
         self.agent.agent_cleanup()
 
@@ -146,44 +150,26 @@ class RLGlue:
         """Message passed to communicate with agent during experiment
         
         Args:
-            message (string): the message (or question) to send to the agent
+            message: the message (or question) to send to the agent
 
         Returns:
-            string: the message back (or answer) from the agent
+            The message back (or answer) from the agent
 
         """
-        if message is None:
-            message_to_send = ""
-        else:
-            message_to_send = message
 
-        the_agent_response = self.agent.agent_message(message_to_send)
-        if the_agent_response is None:
-            return ""
-
-        return the_agent_response
+        return self.agent.agent_message(message)
 
     def rl_env_message(self, message):
         """Message passed to communicate with environment during experiment
         
         Args:
-            message (string): the message (or question) to send to the environment
+            message: the message (or question) to send to the environment
 
         Returns:
-            string: the message back (or answer) from the environment
+            The message back (or answer) from the environment
 
         """
-
-        if message is None:
-            message_to_send = ""
-        else:
-            message_to_send = message
-
-        the_env_response = self.environment.env_message(message_to_send)
-        if the_env_response is None:
-            return ""
-
-        return the_env_response
+        return self.environment.env_message(message)
 
     def rl_episode(self, max_steps_this_episode):
         """Runs an RLGlue episode
@@ -198,12 +184,12 @@ class RLGlue:
 
         self.rl_start()
 
-        while (not is_terminal) and ((max_steps_this_episode == 0) or (self.num_steps < max_steps_this_episode)):
+        while (not is_terminal) and ((max_steps_this_episode == 0) or
+                                     (self.num_steps < max_steps_this_episode)):
             rl_step_result = self.rl_step()
             is_terminal = rl_step_result[3]
 
         return is_terminal
-
 
     def rl_return(self):
         """The total reward

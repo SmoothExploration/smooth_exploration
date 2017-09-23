@@ -3,73 +3,144 @@
 """
   Author: Adam White, Mohammad M. Ajallooeian
   Purpose: for use of Reinforcement learning course University of Alberta Fall 2017
- 
+
   env *ignores* actions: rewards are all random
 """
 
 from __future__ import print_function
-from utils import rand_norm, rand_in_range, rand_un
-import numpy as np
+
+from abc import ABCMeta, abstractmethod
+
 
 class Environment:
     """Implements the environment for an RLGlue environment
 
     Note:
-        env_init, env_start, env_step, env_cleanup, and env_message are required methods
+        env_init, env_start, env_step, env_cleanup, and env_message are required
+        methods.
+    """
+
+    __metaclass__ = ABCMeta
+
+    def __init__(self):
+        reward = None
+        observation = None
+        termination = None
+        self.reward_obs_term = (reward, observation, termination)
+
+    @abstractmethod
+    def env_init(self):
+        """Setup for the environment called when the experiment first starts.
+
+        Note:
+            Initialize a tuple with the reward, first state observation, boolean
+            indicating if it's terminal.
+        """
+
+    @abstractmethod
+    def env_start(self):
+        """The first method called when the experiment starts, called before the
+        agent starts.
+
+        Returns:
+            The first state observation from the environment.
+        """
+
+    @abstractmethod
+    def env_step(self, action):
+        """A step taken by the environment.
+
+        Args:
+            action: The action taken by the agent
+
+        Returns:
+            (float, state, Boolean): a tuple of the reward, state observation,
+                and boolean indicating if it's terminal.
+        """
+
+    @abstractmethod
+    def env_cleanup(self):
+        """Cleanup done after the environment ends"""
+
+    @abstractmethod
+    def env_message(self, message):
+        """A message asking the environment for information
+
+        Args:
+            message: the message passed to the environment
+
+        Returns:
+            the response (or answer) to the message
+        """
+
+
+class ExampleEnvironment(Environment):
+    """Implements the environment for an RLGlue environment
+
+    Note:
+        env_init, env_start, env_step, env_cleanup, and env_message are required
+        methods.
     """
 
     def __init__(self):
-        self.this_reward_observation = (None, None, None) # this_reward_observation: (floating point, NumPy array, Boolean)
+        reward = None
+        observation = None
+        termination = None
+        self.reward_obs_term = (reward, observation, termination)
 
     def env_init(self):
-        """Setup for the environment called when the experiment first starts
-        
+        """Setup for the environment called when the experiment first starts.
+
         Note:
-            Initialize a tuple with the reward, first state observation, boolean indicating if it's terminal
+            Initialize a tuple with the reward, first state observation, boolean
+            indicating if it's terminal.
         """
-        local_observation = np.zeros(0) # An empty NumPy array
+        local_observation = 0  # An empty NumPy array
 
-        self.this_reward_observation = (0.0, local_observation, False)
-
+        self.reward_obs_term = (0.0, local_observation, False)
 
     def env_start(self):
-        """The first method called when the experiment starts, called before the agent starts
-        
-        Returns:
-            Numpy array: the first state observation from the environment
-        """
-        return self.this_reward_observation[1]
+        """The first method called when the experiment starts, called before the
+        agent starts.
 
-    def env_step(self, this_action):
-        """A step taken by the environment
-        
+        Returns:
+            The first state observation from the environment.
+        """
+        return self.reward_obs_term[1]
+
+    def env_step(self, action):
+        """A step taken by the environment.
+
         Args:
-            this_action (Numpy array): the action taken by the agent
+            action: The action taken by the agent
 
         Returns:
-            (float, Numpy array, Boolean): a tuple of the reward, state observation, and boolean indicating if it's terminal
+            (float, state, Boolean): a tuple of the reward, state observation,
+                and boolean indicating if it's terminal.
         """
-        the_reward = rand_norm(0.0, 1.0) # rewards drawn from (0, 1) Gaussian
+        reward = 1 # always returns 1 reward
 
-        self.this_reward_observation = (the_reward, self.this_reward_observation[1], False)
+        obs = self.reward_obs_term[1]
 
-        return self.this_reward_observation
+        self.reward_obs_term = (reward, obs, False)
+
+        return self.reward_obs_term
 
     def env_cleanup(self):
         """Cleanup done after the environment ends"""
-        return
+        pass
 
-    def env_message(self, inMessage):
+    def env_message(self, message):
         """A message asking the environment for information
-        
+
         Args:
-            inMessage (string): the message passed to the environment
+            message (string): the message passed to the environment
 
         Returns:
             string: the response (or answer) to the message
         """
-        if inMessage == "what is your name?":
-            return "my name is skeleton_environment!"
-      
+        if message == "what is the current reward?":
+            return "{}".format(self.reward_obs_term[0])
+
         # else
         return "I don't know how to respond to your message"
