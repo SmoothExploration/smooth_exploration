@@ -109,3 +109,17 @@ ENV/
 
 # osx
 .DS_Store
+*.aux
+*.bbl
+*.blg
+*.DS_Store
+*.dSYM
+*.log
+*.o
+*.out
+*.pdf
+*.pdfsync
+*.pyc
+*.synctex.gz
+*.zip
+*.temp
