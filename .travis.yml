@@ -11,6 +11,7 @@ before_install:
   - conda update --yes conda
 
 install:
+  - conda install --yes python3.4
   - conda install --yes python="3.4" sphinx
   - pip install --user travis-sphinx recommonmark scipy matplotlib sphinx_rtd_theme
 
