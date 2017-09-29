@@ -19,6 +19,7 @@ install:
 script:
   - sphinx-apidoc -eo sphinx/source/pyrst rl_glue
   - export PYTHONPATH=$PYTHONPATH:/usr/lib/python3.4/dist-packages:/usr/local/lib/python3.4/dist-packages
+  - pwd
   - travis-sphinx --source=sphinx/source build
 
 after_success:
