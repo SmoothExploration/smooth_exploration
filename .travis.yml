@@ -9,9 +9,10 @@ before_install:
   - "./miniconda.sh -b"
   - export PATH=/home/travis/miniconda2/bin:$PATH
   - conda update --yes conda
+  - conda create -n py34 python=3.4 anaconda
+  - source activate py34
 
 install:
-  - conda install --yes python3.4
   - conda install --yes python="3.4" sphinx
   - pip install --user travis-sphinx recommonmark scipy matplotlib sphinx_rtd_theme
 
@@ -22,5 +23,4 @@ script:
 
 after_success:
   - travis-sphinx deploy
-
 
