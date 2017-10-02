@@ -82,6 +82,8 @@ class ExampleEnvironment(Environment):
         methods.
     """
 
+    actions = [0]
+
     def __init__(self):
         reward = None
         observation = None

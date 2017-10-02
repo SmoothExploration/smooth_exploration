@@ -25,12 +25,12 @@ def save_results(data, data_size, filename):
 
 
 def main():
-    env_class = environment.Environment
-    agent_class = agent.Agent
+    env_class = environment.ExampleEnvironment
+    agent_class = agent.RandomAgent
     rl_glue = RLGlue(env_class, agent_class)
 
     num_episodes = 2000
-    max_steps = 100000
+    max_steps = 1000
 
     print("\tPrinting one dot for every run: {}".format(num_episodes),
           end=' ')
@@ -43,7 +43,7 @@ def main():
         rl_glue.rl_start()
 
         is_terminal = False
-        while rl_glue.num_steps < max_steps and not is_terminal:
+        while rl_glue.num_steps < max_steps - 1 and not is_terminal:
             reward, state, action, is_terminal = rl_glue.rl_step()
             optimal_action[rl_glue.num_steps] += 1 if "action is optimal" else 0
 
