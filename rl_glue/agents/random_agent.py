@@ -7,14 +7,11 @@
   An abstract class that specifies the Agent API for RL-Glue-py.
 """
 
-from __future__ import print_function
-
-from agent import Agent
-
+from agent import BaseAgent
 import random
 
 
-class RandomAgent(Agent):
+class RandomAgent(BaseAgent):
     """agent does *no* learning, selects action 0 always"""
 
     def __init__(self):

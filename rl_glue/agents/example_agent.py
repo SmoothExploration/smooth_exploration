@@ -1,6 +1,6 @@
-from agent import Agent
+from agent import BaseAgent
 
-class ExampleAgent(Agent):
+class ExampleAgent(BaseAgent):
     """agent does *no* learning, selects action 0 always"""
     def __init__(self):
         self.last_action = None
