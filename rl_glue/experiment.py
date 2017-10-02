@@ -34,6 +34,9 @@ def main():
 
     for i in range(num_episodes):
         rl_glue.rl_init(agent_info={"actions": env_class.actions})
+                                    # 'state_array': env_class.state_array,
+                                    # 'gamma': 1.0,
+                                    # 'alpha': 0.1})
         rl_glue.rl_start()
 
         is_terminal = False

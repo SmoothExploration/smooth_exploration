@@ -25,8 +25,9 @@ class RLGlue:
 
     def rl_init(self, agent_info={}, env_info={}):
         """Initial method called when RLGlue experiment is created"""
-        self.environment.env_init()
-        self.agent.agent_init(agent_info={"actions" : self.environment.actions})
+
+        self.environment.env_init(env_info=env_info)
+        self.agent.agent_init(agent_info=agent_info)
 
         self.total_reward = 0.0
         self.num_steps = 0

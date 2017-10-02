@@ -79,6 +79,7 @@ class ExampleEnvironment(Environment):
     """
 
     actions = [0]
+    state_array = [0]
 
     def __init__(self):
         reward = None
@@ -86,7 +87,7 @@ class ExampleEnvironment(Environment):
         termination = None
         self.reward_obs_term = (reward, observation, termination)
 
-    def env_init(self):
+    def env_init(self, env_info={}):
         """Setup for the environment called when the experiment first starts.
 
         Note:
