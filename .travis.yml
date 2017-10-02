@@ -6,11 +6,13 @@ env:
 # before_install will simply setup a conda enviroment for installing python packages, if you
 # have project dependencies it's usually recommended to go this route
 before_install:
+  - find .
   - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
   - chmod +x miniconda.sh
   - "./miniconda.sh -b"
   - export PATH=/home/travis/miniconda2/bin:$PATH
   - conda update --yes conda
+  - find .
 #  - conda create --yes -n py34 python=3.4 anaconda
 #  - source activate py34
 
@@ -20,7 +22,7 @@ install:
 script:
   - sphinx-apidoc -eo sphinx/source/pyrst rl_glue
   - export PYTHONPATH=$PYTHONPATH:/usr/lib/python3.4/dist-packages:/usr/local/lib/python3.4/dist-packages
-  - ls sphinx/source
+  - find .
   - travis-sphinx --source=sphinx/source build
 
 after_success:
