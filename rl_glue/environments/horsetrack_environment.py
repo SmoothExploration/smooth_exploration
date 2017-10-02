@@ -7,12 +7,10 @@
   env *ignores* actions: rewards are all random
 """
 
-from __future__ import print_function
-from abc import ABCMeta, abstractmethod
-from environment import Environment
+from environment import BaseEnvironment
 
 
-class HorsetrackEnvironment(Environment):
+class HorsetrackEnvironment(BaseEnvironment):
     """Implements the environment for an RLGlue environment
 
     Note:
