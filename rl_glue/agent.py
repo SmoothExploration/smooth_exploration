@@ -63,6 +63,7 @@ class Agent:
     @abstractmethod
     def agent_message(self, message):
         """A function used to pass information from the agent to the experiment.
+        
         Args:
             message: The message passed to the agent.
         Returns:
