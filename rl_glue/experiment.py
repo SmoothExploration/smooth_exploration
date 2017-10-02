@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 
-"""
-  Author: Adam White, Matthew Schlegel, Mohammad M. Ajallooeian
-  Purpose: for use of Rienforcement learning course University of Alberta Fall 2017
-  Last Modified by: Andrew Jacobsen, Victor Silva, Mohammad M. Ajallooeian
-  Last Modified on: 16/9/2017
-
-    An abstract class that specifies the Experiment API for RL-Glue-py.
+"""An abstract class that specifies the Experiment API for RL-Glue-py.
 """
 
 from __future__ import print_function
