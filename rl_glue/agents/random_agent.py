@@ -11,7 +11,7 @@ from agent import BaseAgent
 import random
 
 
-class RandomAgent(BaseAgent):
+class Agent(BaseAgent):
     """agent does *no* learning, selects action 0 always"""
 
     def __init__(self):
