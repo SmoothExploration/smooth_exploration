@@ -10,10 +10,8 @@
 from __future__ import print_function
 from abc import ABCMeta, abstractmethod
 
-import random
 
-
-class Agent:
+class BaseAgent:
     """Implements the agent for an RL-Glue environment.
     Note:
         agent_init, agent_start, agent_step, agent_end, agent_cleanup, and
