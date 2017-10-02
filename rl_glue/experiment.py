@@ -39,19 +39,20 @@ def main():
     optimal_action = [0 for _ in range(max_steps)]
 
     for i in range(num_episodes):
-        rl_glue.rl_init(agent_info={"actions" : env_class.actions})
+        rl_glue.rl_init(agent_info={"actions": env_class.actions})
         rl_glue.rl_start()
 
         is_terminal = False
         while rl_glue.num_steps < max_steps and not is_terminal:
             reward, state, action, is_terminal = rl_glue.rl_step()
-            optimal_action[num_steps] += 1 if "action is optimal" else 0
+            optimal_action[rl_glue.num_steps] += 1 if "action is optimal" else 0
 
         rl_glue.rl_cleanup()
         print(".", end='')
         sys.stdout.flush()
 
-    prop_optimal = [num_optimal / num_episodes for num_optimal in optimal_action]
+    prop_optimal = [num_optimal / num_episodes for num_optimal in
+                    optimal_action]
     save_results(prop_optimal, max_steps, "RL_EXP_OUT.dat")
     print("\nDone")
 

@@ -8,13 +8,15 @@
 """
 
 from __future__ import print_function
-from abc import ABCMeta, abstractmethod
+
 from agent import Agent
 
 import random
 
+
 class RandomAgent(Agent):
     """agent does *no* learning, selects action 0 always"""
+
     def __init__(self):
         self.actions = None
         self.q_values = None

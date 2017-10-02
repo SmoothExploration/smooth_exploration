@@ -13,7 +13,7 @@ from abc import ABCMeta, abstractmethod
 import random
 
 
-class Agent():
+class Agent:
     """Implements the agent for an RL-Glue environment.
     Note:
         agent_init, agent_start, agent_step, agent_end, agent_cleanup, and
@@ -76,6 +76,7 @@ class Agent():
 
 class RandomAgent(Agent):
     """agent does *no* learning, selects action 0 always"""
+
     def __init__(self):
         self.actions = None
         self.q_values = None
