@@ -13,8 +13,8 @@ from __future__ import print_function
 import sys
 
 from rl_glue import RLGlue  # Required for RL-Glue
-from agents import random_agent
-import environment
+from agents import example_agent
+from environment import example_environment
 
 
 def save_results(data, data_size, filename):
@@ -25,8 +25,8 @@ def save_results(data, data_size, filename):
 
 
 def main():
-    env_class = environment.ExampleEnvironment
-    agent_class = agent.RandomAgent
+    env_class = example_environment.ExampleEnvironment
+    agent_class = example_agent.ExampleAgent
     rl_glue = RLGlue(env_class, agent_class)
 
     num_episodes = 2000

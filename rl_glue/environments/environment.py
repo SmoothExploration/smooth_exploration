@@ -12,7 +12,7 @@ from __future__ import print_function
 from abc import ABCMeta, abstractmethod
 
 
-class Environment:
+class BaseEnvironment:
     """Implements the environment for an RLGlue environment
 
     Note:
