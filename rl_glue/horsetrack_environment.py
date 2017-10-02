@@ -8,11 +8,10 @@
 """
 
 from __future__ import print_function
-
 from abc import ABCMeta, abstractmethod
+from environment import Environment
 
-
-class Environment:
+class HorsetrackEnvironment(Environment):
     """Implements the environment for an RLGlue environment
 
     Note:
@@ -20,15 +19,15 @@ class Environment:
         methods.
     """
 
-    __metaclass__ = ABCMeta
+    actions = [-1, 1]
 
     def __init__(self):
         reward = None
         observation = None
         termination = None
+        self.current_state = 0
         self.reward_obs_term = (reward, observation, termination)
 
-    @abstractmethod
     def env_init(self, env_info={}):
         """Setup for the environment called when the experiment first starts.
 
@@ -36,8 +35,11 @@ class Environment:
             Initialize a tuple with the reward, first state observation, boolean
             indicating if it's terminal.
         """
+        reward = 0 # reward is 0 at each time step
+        observation = 0 # Agent starts at state 0
+        self.current_state = 0
+        return (reward, observation, False)
 
-    @abstractmethod
     def env_start(self):
         """The first method called when the experiment starts, called before the
         agent starts.
@@ -45,8 +47,10 @@ class Environment:
         Returns:
             The first state observation from the environment.
         """
+        reward = 0 # reward is 0 at each time step
+        observation = 0 # Agent starts at state 0
+        return (reward, observation, False)
 
-    @abstractmethod
     def env_step(self, action):
         """A step taken by the environment.
 
@@ -58,73 +62,25 @@ class Environment:
                 and boolean indicating if it's terminal.
         """
 
-    @abstractmethod
-    def env_cleanup(self):
-        """Cleanup done after the environment ends"""
+        self.current_state += action
 
-    @abstractmethod
-    def env_message(self, message):
-        """A message asking the environment for information
+        # Go from 0 to 99
+        if self.current_state == -1:
+            self.current_state = 99
 
-        Args:
-            message: the message passed to the environment
+        # Go from 99 to 0
+        if self.current_state == 100:
+            self.current_state = 0
 
-        Returns:
-            the response (or answer) to the message
-        """
+        reward = 0
+        terminal = False
 
+        # Terminal state is 50, reward is 1.
+        if self.current_state == 50:
+            reward = 1
+            terminal = True
 
-class ExampleEnvironment(Environment):
-    """Implements the environment for an RLGlue environment
-
-    Note:
-        env_init, env_start, env_step, env_cleanup, and env_message are required
-        methods.
-    """
-
-    def __init__(self):
-        reward = None
-        observation = None
-        termination = None
-        self.reward_obs_term = (reward, observation, termination)
-
-    def env_init(self):
-        """Setup for the environment called when the experiment first starts.
-
-        Note:
-            Initialize a tuple with the reward, first state observation, boolean
-            indicating if it's terminal.
-        """
-        local_observation = 0  # An empty NumPy array
-
-        self.reward_obs_term = (0.0, local_observation, False)
-
-    def env_start(self):
-        """The first method called when the experiment starts, called before the
-        agent starts.
-
-        Returns:
-            The first state observation from the environment.
-        """
-        return self.reward_obs_term[1]
-
-    def env_step(self, action):
-        """A step taken by the environment.
-
-        Args:
-            action: The action taken by the agent
-
-        Returns:
-            (float, state, Boolean): a tuple of the reward, state observation,
-                and boolean indicating if it's terminal.
-        """
-        reward = 1 # always returns 1 reward
-
-        obs = self.reward_obs_term[1]
-
-        self.reward_obs_term = (reward, obs, False)
-
-        return self.reward_obs_term
+        return (reward, self.current_state, terminal)
 
     def env_cleanup(self):
         """Cleanup done after the environment ends"""
