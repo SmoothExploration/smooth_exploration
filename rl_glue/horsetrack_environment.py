@@ -11,6 +11,7 @@ from __future__ import print_function
 from abc import ABCMeta, abstractmethod
 from environment import Environment
 
+
 class HorsetrackEnvironment(Environment):
     """Implements the environment for an RLGlue environment
 
@@ -35,10 +36,11 @@ class HorsetrackEnvironment(Environment):
             Initialize a tuple with the reward, first state observation, boolean
             indicating if it's terminal.
         """
-        reward = 0 # reward is 0 at each time step
-        observation = 0 # Agent starts at state 0
+        reward = 0  # reward is 0 at each time step
+        observation = 0  # Agent starts at state 0
         self.current_state = 0
-        return (reward, observation, False)
+
+        return reward, observation, False
 
     def env_start(self):
         """The first method called when the experiment starts, called before the
@@ -47,9 +49,10 @@ class HorsetrackEnvironment(Environment):
         Returns:
             The first state observation from the environment.
         """
-        reward = 0 # reward is 0 at each time step
-        observation = 0 # Agent starts at state 0
-        return (reward, observation, False)
+        reward = 0  # reward is 0 at each time step
+        observation = 0  # Agent starts at state 0
+
+        return reward, observation, False
 
     def env_step(self, action):
         """A step taken by the environment.
@@ -80,7 +83,7 @@ class HorsetrackEnvironment(Environment):
             reward = 1
             terminal = True
 
-        return (reward, self.current_state, terminal)
+        return reward, self.current_state, terminal
 
     def env_cleanup(self):
         """Cleanup done after the environment ends"""

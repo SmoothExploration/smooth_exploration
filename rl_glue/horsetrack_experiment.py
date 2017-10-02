@@ -39,7 +39,7 @@ def main():
     total_steps = [0 for _ in range(max_steps)]
 
     for i in range(num_episodes):
-        rl_glue.rl_init(agent_info={"actions" : env_class.actions})
+        rl_glue.rl_init(agent_info={"actions": env_class.actions})
         rl_glue.rl_start()
 
         is_terminal = False
