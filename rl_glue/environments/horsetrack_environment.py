@@ -10,7 +10,7 @@
 from environment import BaseEnvironment
 
 
-class HorsetrackEnvironment(BaseEnvironment):
+class Environment(BaseEnvironment):
     """Implements the environment for an RLGlue environment
 
     Note:

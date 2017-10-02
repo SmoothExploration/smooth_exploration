@@ -1,6 +1,6 @@
 from environment import BaseEnvironment
 
-class ExampleEnvironment(BaseEnvironment):
+class Environment(BaseEnvironment):
     """Implements the environment for an RLGlue environment
 
     Note:
