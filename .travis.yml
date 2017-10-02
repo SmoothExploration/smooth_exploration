@@ -1,6 +1,6 @@
 language: python
-#python:
-#  - 3.4
+python:
+  - 3.4
 
 env:
 # before_install will simply setup a conda enviroment for installing python packages, if you
@@ -11,8 +11,8 @@ before_install:
   - "./miniconda.sh -b"
   - export PATH=/home/travis/miniconda2/bin:$PATH
   - conda update --yes conda
-  - conda create --yes -n py34 python=3.4 anaconda
-  - source activate py34
+#  - conda create --yes -n py34 python=3.4 anaconda
+#  - source activate py34
 
 install:
   - pip install --user travis-sphinx recommonmark scipy matplotlib sphinx_rtd_theme
