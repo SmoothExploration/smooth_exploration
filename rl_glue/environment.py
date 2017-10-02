@@ -29,7 +29,7 @@ class Environment:
         self.reward_obs_term = (reward, observation, termination)
 
     @abstractmethod
-    def env_init(self):
+    def env_init(self, env_info={}):
         """Setup for the environment called when the experiment first starts.
 
         Note:
@@ -82,6 +82,8 @@ class ExampleEnvironment(Environment):
         methods.
     """
 
+    actions = [0]
+
     def __init__(self):
         reward = None
         observation = None
@@ -118,7 +120,7 @@ class ExampleEnvironment(Environment):
             (float, state, Boolean): a tuple of the reward, state observation,
                 and boolean indicating if it's terminal.
         """
-        reward = 1 # always returns 1 reward
+        reward = 1  # always returns 1 reward
 
         obs = self.reward_obs_term[1]
 
