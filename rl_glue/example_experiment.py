@@ -13,7 +13,7 @@ from __future__ import print_function
 import sys
 
 from rl_glue import RLGlue  # Required for RL-Glue
-import agent
+from agents import random_agent
 import environment
 
 
