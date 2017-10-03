@@ -6,9 +6,10 @@
 #
 #SBATCH -t 0-2:00:00 # time (D-HH:MM:SS)
 #
+#SBATCH -J my_name # Name
 #SBATCH -o slurm.%N.%j.out # STDOUT
 #SBATCH -e slurm.%N.%j.err # STDERR
 
-python $1 # params $2 $3
+python $1 $2 $3
 
 # Usage: parallel ./job ::: experiment.py ::: a b c ::: d e f
