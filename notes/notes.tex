@@ -51,6 +51,27 @@
 
 \section*{Reward-Bonus Exploration}
 
+\subsection*{\c{S}im\c{s}ek, \"{O}., \& Barto, A. G. (2006). An intrinsic reward mechanism for efficient exploration. Proceedings of the 23rd International Conference on Machine Learning}
+The goal is to explore to develop an optimal behavior policy $\pi_{s_i}$ that will be executed at some later time.
+
+\subsubsection*{Approach}
+\begin{itemize}
+	\item Uses state with two parts: $s_e$ describes the external state of the environment (the traditional "state"); $s_i$, the internal state, describes $\pi_{s_i}$ and other information that may cause it to change in the future.
+	\item Intrinsic reward is defined as $r_i(t) = p + \sum_{s \in \mathcal{S}} max_{T \leq t}{V_T(s)} - max_{T \leq t} {V_T(s)}$, where the max is used for smoothing; a moving average is also suggested.
+	\item Pessimistic initialization is important because the approach relies on increasing the value estimates over time.
+\end{itemize}
+
+\subsubsection*{Empirical Results}
+\begin{itemize}
+	\item Learned a good policy much more quickly and with less RMS error than baseline action selection methods in a maze task.
+	\item Learned a good option policy after a shorter exploration period than baseline methods. Unlike baseline methods, performance was at least as good as an intra-option Q-learning agent that only used primitive actions.
+\end{itemize}
+
+\subsection*{Singh, S., Barto, A. G., \& Chentanez, N. (2004). Intrinsically motivated reinforcement learning. 18th Annual Conference on Neural Information Processing Systems (NIPS), 17, 1281–1288.}
+Creates options based on pre-defined salient events, and builds option transition and reward models. Upon reaching a state with a salient event $e$, the probability of that state being reached under the current option $o_e$ is used to create an internal reward.
+
+Using option models to determine intrinsic reward significantly speeds up learning compared with no intrinsic reward.
+
 \subsection*{Brafman, R. I., \& Tennenholtz, M. (2003). R-max - a general polynomial time algorithm for near-optimal reinforcement learning.}
 Simple algorithm that attains near-optimal average reward in polynomial time. Builds a model, which is initialized with all states returning the maximum possible reward. 
 \subsubsection*{Main Idea}
