@@ -69,23 +69,10 @@ def main(data_output_location="data"):
 
     agent_data = {}
     for i in range(num_episodes):
-        # Send as compute canada job
         agent_data = run_episode(rl_glue_instance=rl_glue, 
                                  max_steps=max_steps,
                                  optimal_action=optimal_action, 
                                  agent_data=agent_data)
-    # for i in range(num_episodes):
-    #     rl_glue.rl_init(agent_info={"actions": env_class.actions})
-    #     rl_glue.rl_start()
-
-    #     is_terminal = False
-    #     while rl_glue.num_steps < max_steps - 1 and not is_terminal:
-    #         reward, state, action, is_terminal = rl_glue.rl_step()
-    #         optimal_action[rl_glue.num_steps] += 1 if "action is optimal" else 0
-
-    #     rl_glue.rl_cleanup()
-    #     print(".", end='')
-    #     sys.stdout.flush()
 
     prop_optimal = [num_optimal / num_episodes for num_optimal in
                     optimal_action]
