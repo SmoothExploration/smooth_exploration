@@ -13,8 +13,8 @@ from __future__ import print_function
 import sys
 
 from rl_glue import RLGlue  # Required for RL-Glue
-import random_agent
-import horsetrack_environment
+from agents import random_agent
+from environments import horsetrack_environment
 
 
 def save_results(data, data_size, filename):
@@ -25,8 +25,8 @@ def save_results(data, data_size, filename):
 
 
 def main():
-    env_class = horsetrack_environment.HorsetrackEnvironment
-    agent_class = random_agent.RandomAgent
+    env_class = horsetrack_environment.Environment
+    agent_class = random_agent.Agent
     rl_glue = RLGlue(env_class, agent_class)
 
     num_episodes = 1000

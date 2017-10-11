@@ -1,4 +1,6 @@
-from environment import BaseEnvironment
+#!/usr/bin/env python
+
+from .environment import BaseEnvironment
 
 class Environment(BaseEnvironment):
     """Implements the environment for an RLGlue environment

@@ -1,12 +1,23 @@
-from agent import BaseAgent
+#!/usr/bin/env python
+
+from .agent import BaseAgent
 
 class Agent(BaseAgent):
     """agent does *no* learning, selects action 0 always"""
     def __init__(self):
         self.last_action = None
+        self.q_values = None
+        self.actions = None
 
-    def agent_init(self):
+    def agent_init(self, agent_info={}):
         """Setup for the agent called when the experiment first starts."""
+
+        if "actions" in agent_info:
+            self.actions = agent_info["actions"]
+
+        if "state_array" in agent_info:
+            self.q_values = agent_info["state_array"]
+
         self.last_action = 0
 
     def agent_start(self, observation):

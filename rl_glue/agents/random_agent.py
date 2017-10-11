@@ -7,7 +7,7 @@
   An abstract class that specifies the Agent API for RL-Glue-py.
 """
 
-from agent import BaseAgent
+from .agent import BaseAgent
 import random
 
 

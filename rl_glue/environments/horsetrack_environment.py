@@ -7,7 +7,7 @@
   env *ignores* actions: rewards are all random
 """
 
-from environment import BaseEnvironment
+from .environment import BaseEnvironment
 
 
 class Environment(BaseEnvironment):
