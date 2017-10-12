@@ -1,18 +1,8 @@
 #!/usr/bin/env python
 
-"""
-  Author: Adam White, Mohammad M. Ajallooeian
-  Purpose: for use of Reinforcement learning course University of Alberta Fall 2017
+from .environment import BaseEnvironment
 
-  env *ignores* actions: rewards are all random
-"""
-
-from __future__ import print_function
-from abc import ABCMeta, abstractmethod
-from environment import Environment
-
-
-class HorsetrackEnvironment(Environment):
+class Environment(BaseEnvironment):
     """Implements the environment for an RLGlue environment
 
     Note:
@@ -20,27 +10,24 @@ class HorsetrackEnvironment(Environment):
         methods.
     """
 
-    actions = [-1, 1]
+    actions = [0]
 
     def __init__(self):
         reward = None
         observation = None
         termination = None
-        self.current_state = 0
         self.reward_obs_term = (reward, observation, termination)
 
-    def env_init(self, env_info={}):
+    def env_init(self):
         """Setup for the environment called when the experiment first starts.
 
         Note:
             Initialize a tuple with the reward, first state observation, boolean
             indicating if it's terminal.
         """
-        reward = 0  # reward is 0 at each time step
-        observation = 0  # Agent starts at state 0
-        self.current_state = 0
+        local_observation = 0  # An empty NumPy array
 
-        return reward, observation, False
+        self.reward_obs_term = (0.0, local_observation, False)
 
     def env_start(self):
         """The first method called when the experiment starts, called before the
@@ -49,10 +36,7 @@ class HorsetrackEnvironment(Environment):
         Returns:
             The first state observation from the environment.
         """
-        reward = 0  # reward is 0 at each time step
-        observation = 0  # Agent starts at state 0
-
-        return reward, observation, False
+        return self.reward_obs_term[1]
 
     def env_step(self, action):
         """A step taken by the environment.
@@ -64,26 +48,13 @@ class HorsetrackEnvironment(Environment):
             (float, state, Boolean): a tuple of the reward, state observation,
                 and boolean indicating if it's terminal.
         """
+        reward = 1  # always returns 1 reward
 
-        self.current_state += action
+        obs = self.reward_obs_term[1]
 
-        # Go from 0 to 99
-        if self.current_state == -1:
-            self.current_state = 99
+        self.reward_obs_term = (reward, obs, False)
 
-        # Go from 99 to 0
-        if self.current_state == 100:
-            self.current_state = 0
-
-        reward = 0
-        terminal = False
-
-        # Terminal state is 50, reward is 1.
-        if self.current_state == 50:
-            reward = 1
-            terminal = True
-
-        return reward, self.current_state, terminal
+        return self.reward_obs_term
 
     def env_cleanup(self):
         """Cleanup done after the environment ends"""
