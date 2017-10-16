@@ -62,13 +62,15 @@ def main(data_output_location="data"):
 
     num_episodes = 2000
     max_steps = 1000
-    max_total_steps = 1000000
+    max_total_steps = 10000000
 
     print("Running Agent: {} on Environment: {}.".format(agent_name, environment_name))
     # print("\tPrinting one dot for every episode",
     #       end=' ')
 
-    agent_data = {}
+    agent_data = {"epsilon": 0.1,
+                  "alpha": 0.1,
+                  }
     total_steps = 0
     termination_times = []
 
@@ -76,6 +78,8 @@ def main(data_output_location="data"):
         agent_data = run_episode(rl_glue_instance=rl_glue, 
                                  max_steps=max_steps,
                                  agent_data=agent_data)
+        print("AGENT DATA")
+        print(agent_data)
         total_steps += rl_glue.num_steps
         termination_times.append(total_steps)
 
