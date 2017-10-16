@@ -1,4 +1,5 @@
 RL_EXP_OUT.dat
+data
 *.idea*
 *.DS_Store*
 sphinx/source/pyrst/*
