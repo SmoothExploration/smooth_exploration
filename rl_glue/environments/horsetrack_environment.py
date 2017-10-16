@@ -34,7 +34,7 @@ class Environment(BaseEnvironment):
             Initialize a tuple with the reward, first state observation, boolean
             indicating if it's terminal.
         """
-        reward = 0  # reward is 0 at each time step
+        reward = -1  # reward is 0 at each time step
         observation = 0  # Agent starts at state 0
         self.current_state = 0
 
@@ -47,7 +47,7 @@ class Environment(BaseEnvironment):
         Returns:
             The first state observation from the environment.
         """
-        reward = 0  # reward is 0 at each time step
+        reward = -1  # reward is 0 at each time step
         observation = 0  # Agent starts at state 0
 
         return reward, observation, False
