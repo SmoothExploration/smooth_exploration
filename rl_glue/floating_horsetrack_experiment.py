@@ -88,12 +88,10 @@ if __name__ == "__main__":
                             np.array(agent_info_["wrap_widths"])]
     steps_ = int(sys.argv[-1])
 
-    filename_ = "{}__{}__{}__epsilon{epsilon}__alpha{alpha}__lambda{" \
-                "lambda}__beta{beta}__action{}.dat"
-    timestamp = int((datetime.datetime.now() -
-                     datetime.datetime.utcfromtimestamp(0)).total_seconds())
-    filename_ = filename_.format(timestamp,
-                                 agent_names[int(sys.argv[1])],
+    filename_ = "{}__{}__{epsilon}__{alpha}__{lambda}__{beta}__{}.dat"
+    # timestamp = int((datetime.datetime.now() -
+    #                  datetime.datetime.utcfromtimestamp(0)).total_seconds())
+    filename_ = filename_.format(agent_names[int(sys.argv[1])],
                                  "floating-horsetrack",
                                  int(agent_info_['action_in_features']),
                                  **agent_info_)
