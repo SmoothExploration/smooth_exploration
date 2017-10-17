@@ -8,6 +8,7 @@
 """
 
 from .environment import BaseEnvironment
+import numpy as np
 
 
 class Environment(BaseEnvironment):
@@ -24,7 +25,7 @@ class Environment(BaseEnvironment):
         reward = None
         observation = None
         termination = None
-        self.current_state = 0
+        self.current_state = np.asarray([0])
         self.reward_obs_term = (reward, observation, termination)
 
     def env_init(self, env_info={}):
@@ -35,8 +36,8 @@ class Environment(BaseEnvironment):
             indicating if it's terminal.
         """
         reward = -1  # reward is 0 at each time step
-        observation = 0  # Agent starts at state 0
-        self.current_state = 0
+        observation = np.asarray([0])  # Agent starts at state 0
+        self.current_state = np.asarray([0])
 
         return reward, observation, False
 
@@ -48,9 +49,10 @@ class Environment(BaseEnvironment):
             The first state observation from the environment.
         """
         reward = -1  # reward is 0 at each time step
-        observation = 0  # Agent starts at state 0
+        observation = np.asarray([0])  # Agent starts at state 0
+        self.current_state = np.asarray([0])
 
-        return reward, observation, False
+        return observation
 
     def env_step(self, action):
         """A step taken by the environment.
@@ -66,18 +68,18 @@ class Environment(BaseEnvironment):
         self.current_state += action
 
         # Go from 0 to 99
-        if self.current_state == -1:
-            self.current_state = 99
+        if self.current_state[0] == -1:
+            self.current_state = np.asarray([99])
 
         # Go from 99 to 0
         if self.current_state == 100:
-            self.current_state = 0
+            self.current_state = np.asarray([0])
 
         reward = 0
         terminal = False
 
         # Terminal state is 50, reward is 1.
-        if self.current_state == 50:
+        if self.current_state[0] == 50:
             reward = 1
             terminal = True
 

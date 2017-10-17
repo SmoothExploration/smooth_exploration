@@ -26,16 +26,16 @@ class RLGlue:
         self.num_steps = None
         self.num_episodes = None
 
-    def rl_init(self, agent_info={}, env_info={}):
+    def rl_init(self, agent_init_info={}, env_init_info={}):
         """Initial method called when RLGlue experiment is created"""
         self.environment.env_init()
-        self.agent.agent_init(agent_info={"actions" : self.environment.actions})
+        self.agent.agent_init(agent_init_info=agent_init_info)
 
         self.total_reward = 0.0
         self.num_steps = 0
         self.num_episodes = 0
 
-    def rl_start(self):
+    def rl_start(self, agent_start_info={}, env_start_info={}):
         """Starts RLGlue experiment
 
         Returns:
@@ -43,7 +43,7 @@ class RLGlue:
         """
 
         last_state = self.environment.env_start()
-        self.last_action = self.agent.agent_start(last_state)
+        self.last_action = self.agent.agent_start(last_state, agent_start_info=agent_start_info)
 
         observation = (last_state, self.last_action)
 
