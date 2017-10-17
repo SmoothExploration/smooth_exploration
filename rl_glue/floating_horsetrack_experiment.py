@@ -5,9 +5,11 @@
 Usage: python horsetrack_experiment.py args
 
 Args:
+    epsilon (float)
     alpha (float)
     lambda (float)
     action in state rep (True/False)
+    feature pseudocounts (True/False)
     agent_index (int)
         1. random_agent
         2. SARSA
@@ -15,7 +17,11 @@ Args:
 """
 
 from __future__ import print_function
+import datetime
+import time
 import sys
+
+import numpy as np
 
 from environments import floating_horsetrack_environment
 from rl_glue import RLGlue  # Required for RL-Glue
@@ -61,21 +67,37 @@ def main(agent_info, agent_class, steps, filename):
 
 
 if __name__ == "__main__":
-    agent_info_ = {"epsilon": float(sys.argv[1]),
-                   "alpha": float(sys.argv[2]),
-                   "lambda": float(sys.argv[3]),
-                   "action_in_features": sys.argv[4].lower() == 'true',
+    start = time.time()
+    agent_names = {1: "random",
+                   2: "sarsa"}
+    agents = {1: random_agent.Agent,
+              2: sarsa_func.Agent}
+    agent_class_ = agents[int(sys.argv[1])]
+
+    agent_info_ = {"epsilon": float(sys.argv[2]),
+                   "alpha": float(sys.argv[3]),
+                   "lambda": float(sys.argv[4]),
+                   "beta": float(sys.argv[5]),
+                   "action_in_features": sys.argv[6].lower() == 'true',
                    "gamma": 1.0,
                    "num_tilings": [16],
                    "num_tiles": [2],
                    "wrap_widths": [100],
-                   "scale": [.02]}
-    filename_ = "help.dat"
+                   }
+    agent_info_['scale'] = [np.array(agent_info_['num_tiles']) /
+                            np.array(agent_info_["wrap_widths"])]
+    steps_ = int(sys.argv[-1])
 
-    agents = {1: random_agent.Agent,
-              2: sarsa_func.Agent}
-    agent_class_ = agents[int(sys.argv[5])]
-
-    steps_ = int(sys.argv[6])
+    filename_ = "{}__{}__{}__epsilon{epsilon}__alpha{alpha}__lambda{" \
+                "lambda}__beta{beta}__action{}.dat"
+    timestamp = int((datetime.datetime.now() -
+                     datetime.datetime.utcfromtimestamp(0)).total_seconds())
+    filename_ = filename_.format(timestamp,
+                                 agent_names[int(sys.argv[1])],
+                                 "floating-horsetrack",
+                                 int(agent_info_['action_in_features']),
+                                 **agent_info_)
 
     main(agent_info_, agent_class_, steps_, filename_)
+
+    print("Done in {}s".format(time.time() - start))

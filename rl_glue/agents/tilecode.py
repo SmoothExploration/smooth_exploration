@@ -44,7 +44,7 @@ class Tilecoder:
         if action_in_features:
             self.num_features += len(actions)
 
-        self.active_features = num_tilings.sum()
+        self.num_active_features = num_tilings.sum()
 
     def get_features(self, observation):
         def tilecode(i, floats):
@@ -56,7 +56,7 @@ class Tilecoder:
 
         features = [tilecode(i, floats) for i, floats in enumerate(observation)]
 
-        phi = np.zeros(self.num_features)
-        phi[np.concatenate([np.asarray(f) for f in features])] += 1
+        phi = np.zeros(self.num_features, dtype=np.bool)
+        phi[np.concatenate([np.asarray(f) for f in features])] += True
 
         return phi
