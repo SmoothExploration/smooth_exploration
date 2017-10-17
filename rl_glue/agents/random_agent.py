@@ -18,16 +18,16 @@ class Agent(BaseAgent):
         self.actions = None
         self.q_values = None
 
-    def agent_init(self, agent_info={}):
+    def agent_init(self, agent_init_info={}):
         """Setup for the agent called when the experiment first starts."""
 
-        if "actions" in agent_info:
-            self.actions = agent_info["actions"]
+        if "actions" in agent_init_info:
+            self.actions = agent_init_info["actions"]
 
-        if "state_array" in agent_info:
-            self.q_values = agent_info["state_array"]
+        if "state_array" in agent_init_info:
+            self.q_values = agent_init_info["state_array"]
 
-    def agent_start(self, observation):
+    def agent_start(self, observation, agent_start_info={}):
         """The first method called when the experiment starts, called after
         the environment starts.
 
