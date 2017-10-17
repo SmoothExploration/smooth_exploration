@@ -28,7 +28,7 @@ def save_results(data, data_size, filename):
 def main(data_output_location="data"):
     
     env_class = horsetrack_environment.Environment
-    agent_class = random_agent.Agent
+    agent_class = tabular_sarsa_agent.Agent
 
     agent_name = agent_class.__module__[agent_class.__module__.find(".") + 1:]
     environment_name = env_class.__module__[env_class.__module__.find(".") + 1:]

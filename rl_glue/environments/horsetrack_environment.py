@@ -75,12 +75,12 @@ class Environment(BaseEnvironment):
         if self.current_state == 100:
             self.current_state = np.asarray([0])
 
-        reward = 0
+        reward = -1
         terminal = False
 
         # Terminal state is 50, reward is 1.
         if self.current_state[0] == 50:
-            reward = 1
+            reward = 0
             terminal = True
 
         return reward, self.current_state, terminal
