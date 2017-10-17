@@ -30,7 +30,7 @@ class Agent(BaseAgent):
         self.alpha = None
         self.gamma = None
         self.epsilon = None
-        self.beta = None
+        self.kappa = None
         self.time = None
 
     def agent_init(self, agent_init_info={}):
@@ -49,10 +49,10 @@ class Agent(BaseAgent):
         alpha0 = float(agent_init_info.get('alpha', 0.1))
         self.alpha = alpha0 / self.tilecoder.num_active_features
         self.epsilon = float(agent_init_info.get('epsilon', 0))
-        self.beta = float(agent_init_info.get('beta', 0))
+        self.kappa = float(agent_init_info.get('kappa', 0))
         self.time = 0
 
-        if self.beta:
+        if self.kappa:
             self.feature_counts = np.ones((2, self.tilecoder.num_features))
             self.feature_counts *= 0.5
 
@@ -79,6 +79,7 @@ class Agent(BaseAgent):
 
     def choose_action(self, features):
         if np.random.uniform() > self.epsilon:
+            # find value of taking each action
             action_values = np.einsum("ij,j->i",
                                       self.q_values,
                                       features)
@@ -87,7 +88,7 @@ class Agent(BaseAgent):
             return np.random.choice(self.actions)
 
     def action_value(self, features, action):
-        return np.einsum("i,i->",  # vector dot product
+        return np.einsum("i,i->",  # vector dot product to find action value
                          self.q_values[self.action_index[action]],
                          features)
 
@@ -121,9 +122,9 @@ class Agent(BaseAgent):
             features[-self.actions.size:] = self.actions == action
 
         int_reward = 0
-        if self.beta:
+        if self.kappa:
             pseudocount = self.intrinsic_reward(features)
-            int_reward = self.beta / np.sqrt(pseudocount)
+            int_reward = self.kappa / np.sqrt(pseudocount)
             self.feature_counts[0][~features] += 1
             self.feature_counts[1][features] += 1
 
@@ -151,9 +152,9 @@ class Agent(BaseAgent):
                 terminal state.
         """
         int_reward = 0
-        if self.beta:
+        if self.kappa:
             pseudocount = self.intrinsic_reward(self.last_features)
-            int_reward = self.beta / np.sqrt(pseudocount)
+            int_reward = self.kappa / np.sqrt(pseudocount)
             self.feature_counts[0][~self.last_features] += 1
             self.feature_counts[1][self.last_features] += 1
 

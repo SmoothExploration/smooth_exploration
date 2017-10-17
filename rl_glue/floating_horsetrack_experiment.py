@@ -78,7 +78,7 @@ if __name__ == "__main__":
     agent_info_ = {"epsilon": float(sys.argv[2]),
                    "alpha": float(sys.argv[3]),
                    "lambda": float(sys.argv[4]),
-                   "beta": float(sys.argv[5]),
+                   "kappa": float(sys.argv[5]),
                    "action_in_features": sys.argv[6].lower() == 'true',
                    "gamma": 1.0,
                    "num_tilings": [16],
@@ -89,7 +89,7 @@ if __name__ == "__main__":
                             np.array(agent_info_["wrap_widths"])]
     steps_ = int(sys.argv[-1])
 
-    filename_ = "{}__{}__{epsilon}__{alpha}__{lambda}__{beta}__{}.dat"
+    filename_ = "{}__{}__{epsilon}__{alpha}__{lambda}__{kappa}__{}.dat"
     # timestamp = int((datetime.datetime.now() -
     #                  datetime.datetime.utcfromtimestamp(0)).total_seconds())
     filename_ = filename_.format(agent_names[int(sys.argv[1])],
