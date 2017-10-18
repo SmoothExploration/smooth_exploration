@@ -31,10 +31,12 @@ from agents import sarsa_func
 
 def save_results(data, data_size, filename):
     # data: floating point, data_size: integer, filename: string
-    with open(filename, "a") as data_file:
+    with open(filename, "a+") as data_file:
         for i in range(data_size - 1):
-            data_file.write("{0}, ".format(data[i]))
-        data_file.write("{}\n".format(data[-1]))
+            data_file.write("{}, ".format(data[i]))
+
+        if data:
+            data_file.write("{}\n".format(data[-1]))
 
 
 def main(agent_info, agent_class, steps, filename):
