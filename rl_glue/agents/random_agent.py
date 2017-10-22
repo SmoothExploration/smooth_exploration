@@ -38,7 +38,6 @@ class Agent(BaseAgent):
         Returns:
             The first action the agent takes.
         """
-
         return random.choice(self.actions)
 
     def agent_step(self, reward, observation):
@@ -53,7 +52,6 @@ class Agent(BaseAgent):
         Returns:
             The action the agent is taking.
         """
-
         return random.choice(self.actions)
 
     def agent_end(self, reward):

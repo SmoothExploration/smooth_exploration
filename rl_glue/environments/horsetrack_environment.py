@@ -35,7 +35,7 @@ class Environment(BaseEnvironment):
             Initialize a tuple with the reward, first state observation, boolean
             indicating if it's terminal.
         """
-        reward = -1  # reward is 0 at each time step
+        reward = 0  # reward is 0 at each time step
         observation = np.asarray([0])  # Agent starts at state 0
         self.current_state = np.asarray([0])
 
@@ -48,7 +48,7 @@ class Environment(BaseEnvironment):
         Returns:
             The first state observation from the environment.
         """
-        reward = -1  # reward is 0 at each time step
+        reward = 0  # reward is 0 at each time step
         observation = np.asarray([0])  # Agent starts at state 0
         self.current_state = np.asarray([0])
 
@@ -75,12 +75,12 @@ class Environment(BaseEnvironment):
         if self.current_state == 100:
             self.current_state = np.asarray([0])
 
-        reward = -1
+        reward = 0
         terminal = False
 
         # Terminal state is 50, reward is 1.
         if self.current_state[0] == 50:
-            reward = 0
+            reward = 1
             terminal = True
 
         return reward, self.current_state, terminal

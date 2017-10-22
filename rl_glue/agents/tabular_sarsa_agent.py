@@ -26,19 +26,19 @@ class Agent(BaseAgent):
 
         self.q_values = np.zeros(self.world_size * len(self.actions)).reshape(self.world_size, len(self.actions))
 
-        # if "q_values" in agent_info:
-        #     self.q_values = agent_info["q_values"]
+        # if "q_values" in agent_init_info:
+        #     self.q_values = agent_init_info["q_values"]
         # else:
         #     self.q_values = np.zeros(self.world_size * len(self.actions)).reshape(self.world_size, len(self.actions))
 
-        # if "epsilon" in agent_info:
-        #     self.epsilon = agent_info["epsilon"]
+        if "epsilon" in agent_init_info:
+            self.epsilon = agent_init_info["epsilon"]
 
-        # if "alpha" in agent_info:
-        #     self.alpha = agent_info["alpha"]
+        if "alpha" in agent_init_info:
+            self.alpha = agent_init_info["alpha"]
 
-        # if "lambda" in agent_info:
-        #     self.lam = agent_info["lambda"]
+        # if "lambda" in agent_init_info:
+        #     self.lam = agent_init_info["lambda"]
 
         self.last_action = 0
 
