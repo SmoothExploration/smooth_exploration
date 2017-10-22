@@ -42,8 +42,8 @@ class Agent(BaseAgent):
         self.action_feature = agent_init_info['action_in_features']
 
         self.tilecoder = Tilecoder(**agent_init_info)
-        self.q_values = np.zeros((self.actions.size,
-                                  self.tilecoder.num_features))
+        self.q_values = np.ones((self.actions.size,
+                                  self.tilecoder.num_features)) * agent_init_info['initialization_values']
 
         self.gamma = float(agent_init_info.get('gamma', 1.0))
         alpha0 = float(agent_init_info.get('alpha', 0.1))
