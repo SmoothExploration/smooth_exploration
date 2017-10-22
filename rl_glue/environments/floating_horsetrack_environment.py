@@ -68,11 +68,12 @@ class Environment(BaseEnvironment):
         self.a_bar *= 0.8
         self.a_bar += 0.2 * action
 
-        reward = -1
+        reward = 0
         terminal = False
 
         # Terminal state is 50, reward is 1.
         if abs(self.current_state - 50) <= 0.5:
+            reward = 1
             terminal = True
 
         return reward, self.current_state, terminal
