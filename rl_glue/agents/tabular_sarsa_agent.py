@@ -86,7 +86,8 @@ class Agent(BaseAgent):
         if np.random.random() < self.epsilon:
             action = np.random.randint(0, len(self.actions))
         else:
-            action = np.argmax(self.q_values[observation])
+            shuf = np.random.permutation(self.actions.shape[0])
+            action = shuf[np.argmax(self.q_values[observation][shuf])]
 
         # might do some learning here
         td_target = reward + self.gamma * self.q_values[observation[0]][action]

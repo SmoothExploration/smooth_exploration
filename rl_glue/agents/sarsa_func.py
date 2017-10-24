@@ -80,10 +80,11 @@ class Agent(BaseAgent):
     def choose_action(self, features):
         if np.random.uniform() > self.epsilon:
             # find value of taking each action
+            shuf = np.random.permutation(self.actions.shape[0])
             action_values = np.einsum("ij,j->i",
                                       self.q_values,
                                       features)
-            return self.actions[np.argmax(action_values)]
+            return self.actions[shuf[np.argmax(action_values[shuf])]]
         else:
             return np.random.choice(self.actions)
 

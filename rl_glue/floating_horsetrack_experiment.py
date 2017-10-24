@@ -5,14 +5,14 @@
 Usage: python horsetrack_experiment.py args
 
 Args:
-    epsilon (float)
-    alpha (float)
-    lambda (float)
-    action in state rep (True/False)
-    feature pseudocounts (True/False)
     agent_index (int)
         1. random_agent
         2. SARSA
+    epsilon (float)
+    alpha (float)
+    lambda (float)
+    kappa (float)
+    action in state rep (True/False)
     num steps (int)
 """
 
