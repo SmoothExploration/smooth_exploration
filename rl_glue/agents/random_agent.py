@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 
-"""
-  Author: Adam White, Matthew Schlegel, Mohammad M. Ajallooeian
-  Purpose: for use of Reinforcement learning course University of Alberta Fall 2017
-
-  An abstract class that specifies the Agent API for RL-Glue-py.
+"""An example of a random agent.
 """
 
 from .agent import BaseAgent

@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-"""env *ignores* actions: rewards are all random
-"""
-
 from __future__ import print_function
 
 import numpy as np

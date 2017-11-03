@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
-"""
- Copyright (C) 2017, Adam White, Mohammad M. Ajallooeian
-
-
+"""Glues together an experiment, agent, and environment.
 """
 
 from __future__ import print_function

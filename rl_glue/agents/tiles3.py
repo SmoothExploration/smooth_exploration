@@ -1,5 +1,4 @@
-"""
-Tile Coding Software version 3.0beta
+"""Tile Coding Software version 3.0beta
 by Rich Sutton
 based on a program created by Steph Schaeffer and others
 External documentation and recommendations on the use of this code is available in the

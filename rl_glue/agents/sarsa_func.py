@@ -42,8 +42,9 @@ class Agent(BaseAgent):
         self.action_feature = agent_init_info['action_in_features']
 
         self.tilecoder = Tilecoder(**agent_init_info)
-        self.q_values = np.ones((self.actions.size,
-                                  self.tilecoder.num_features)) * agent_init_info['initialization_values']
+        self.q_values = (np.ones((self.actions.size,
+                                  self.tilecoder.num_features)) *
+                         agent_init_info['initialization_values'])
 
         self.gamma = float(agent_init_info.get('gamma', 1.0))
         alpha0 = float(agent_init_info.get('alpha', 0.1))
@@ -136,7 +137,7 @@ class Agent(BaseAgent):
                     + self.gamma * self.action_value(features, action)
                     - self.action_value(self.last_features, self.last_action))
 
-        self.q_values[self.last_action] += self.alpha * td_error
+        self.q_values[self.last_action] += self.alpha * td_error * self.last_obs
 
         self.last_action = action
         self.last_obs = observation
@@ -162,7 +163,7 @@ class Agent(BaseAgent):
         td_error = (reward
                     + int_reward
                     - self.action_value(self.last_features, self.last_action))
-        self.q_values[self.last_action] += self.alpha * td_error
+        self.q_values[self.last_action] += self.alpha * td_error * self.last_obs
 
     def agent_cleanup(self):
         """Cleanup done after the agent ends."""

@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 
-"""
-  Author: Adam White, Mohammad M. Ajallooeian
-  Purpose: for use of Reinforcement learning course University of Alberta Fall 2017
-
-  env *ignores* actions: rewards are all random
+"""Abstract environment base class for RL-Glue-py.
 """
 
 from __future__ import print_function

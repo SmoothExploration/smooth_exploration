@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-"""
-"""
-
 import numpy.random as rnd
 
 
