@@ -83,7 +83,7 @@ if __name__ == "__main__":
                    "kappa": float(sys.argv[5]),
                    "action_in_features": sys.argv[6].lower() == 'true',
                    "initialization_values": float(sys.argv[7]),
-                   "gamma": 1.0,
+                   "gamma": 0.95,
                    "num_tilings": [16],
                    "num_tiles": [2],
                    "wrap_widths": [100],

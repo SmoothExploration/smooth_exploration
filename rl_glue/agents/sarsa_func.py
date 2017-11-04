@@ -54,7 +54,10 @@ class Agent(BaseAgent):
         self.time = 0
 
         if self.kappa:
-            self.feature_counts = np.ones((2, self.tilecoder.num_features))
+            num_features = self.tilecoder.num_features
+            if self.action_feature:
+                num_features -= self.actions.size
+            self.feature_counts = np.ones((2, num_features))
             self.feature_counts *= 0.5
 
     def agent_start(self, observation, agent_start_info={}):
@@ -102,6 +105,9 @@ class Agent(BaseAgent):
         rho_prime_i1 = (self.feature_counts[1][features] + 1) / (self.time + 1)
         rho_prime = rho_prime_i0.prod() * rho_prime_i1.prod()
 
+        self.feature_counts[0][~features] += 1
+        self.feature_counts[1][features] += 1
+
         return rho * (1 - rho_prime) / (rho_prime - rho)
 
     def agent_step(self, reward, observation):
@@ -125,19 +131,18 @@ class Agent(BaseAgent):
 
         int_reward = 0
         if self.kappa:
-            pseudocount = self.intrinsic_reward(features)
+            ind = -self.actions.size if self.action_feature else None
+            pseudocount = self.intrinsic_reward(features[:ind])
             int_reward = self.kappa / np.sqrt(pseudocount)
-            self.feature_counts[0][~features] += 1
-            self.feature_counts[1][features] += 1
-
-        # print(pseudocount, int_reward)
 
         td_error = (reward
                     + int_reward
                     + self.gamma * self.action_value(features, action)
-                    - self.action_value(self.last_features, self.last_action))
+                    - self.action_value(self.last_features,
+                                        self.last_action))
+        td_error *= self.last_features
 
-        self.q_values[self.last_action] += self.alpha * td_error * self.last_obs
+        self.q_values[self.last_action] += self.alpha * td_error
 
         self.last_action = action
         self.last_obs = observation
@@ -155,15 +160,15 @@ class Agent(BaseAgent):
         """
         int_reward = 0
         if self.kappa:
-            pseudocount = self.intrinsic_reward(self.last_features)
+            ind = -self.actions.size if self.action_feature else None
+            pseudocount = self.intrinsic_reward(self.last_features[:ind])
             int_reward = self.kappa / np.sqrt(pseudocount)
-            self.feature_counts[0][~self.last_features] += 1
-            self.feature_counts[1][self.last_features] += 1
 
         td_error = (reward
                     + int_reward
                     - self.action_value(self.last_features, self.last_action))
-        self.q_values[self.last_action] += self.alpha * td_error * self.last_obs
+        td_error *= self.last_features
+        self.q_values[self.last_action] += self.alpha * td_error
 
     def agent_cleanup(self):
         """Cleanup done after the agent ends."""
