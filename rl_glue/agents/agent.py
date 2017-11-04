@@ -50,8 +50,7 @@ class BaseAgent:
     def agent_end(self, reward):
         """Run when the agent terminates.
         Args:
-            reward (float): the reward the agent received for entering the
-                terminal state.
+            reward (float): the reward the agent received for entering the terminal state.
         """
 
     @abstractmethod
