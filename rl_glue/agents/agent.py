@@ -28,8 +28,7 @@ class BaseAgent:
         """The first method called when the experiment starts, called after
         the environment starts.
         Args:
-            observation (Numpy array): the state observation from the
-                environment's evn_start function.
+            observation (Numpy array): the state observation from the environment's evn_start function.
         Returns:
             The first action the agent takes.
         """
