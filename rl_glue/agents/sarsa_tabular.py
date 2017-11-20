@@ -45,7 +45,7 @@ class Agent(BaseAgent):
         self.time = 0        
 
         if self.kappa:
-            self.feature_counts = np.zeros((self.world_size, len(self.actions)))
+            self.feature_counts = np.zeros(self.world_size + 1)
             # self.feature_counts *= 0.5
 
 
@@ -71,9 +71,15 @@ class Agent(BaseAgent):
             action_choice = np.random.int(2)
             action = self.actions[action_choice]
         else:
-            action_choice = np.random.choice(np.flatnonzero(self.q_values[observation[0]] == np.max(self.q_values[observation[0]])))
+            # print(self.q_values[observation])
+            # print(self.q_values)
+            # print("HERE")
+            # print(observation)
+            action_choice = np.random.choice(np.flatnonzero(self.q_values[int(observation[0])] == np.max(self.q_values[int(observation[0])])))
             action = self.actions[action_choice]
-            
+        
+        if self.kappa:
+            self.feature_counts[int(observation[0])] += 1
 
         self.last_state = np.copy(observation)
         self.last_action = np.copy(action_choice)
@@ -116,19 +122,19 @@ class Agent(BaseAgent):
             action_choice = np.random.int(2)
             action = self.actions[action_choice]
         else:
-            action_choice = np.random.choice(np.flatnonzero(self.q_values[observation[0]] == np.max(self.q_values[observation[0]])))
+            action_choice = np.random.choice(np.flatnonzero(self.q_values[int(observation[0])] == np.max(self.q_values[int(observation[0])])))
             action = self.actions[action_choice]
 
         count_reward = 0
 
         if self.kappa:
-            self.feature_counts[self.last_state[0]] += 1
-            count_reward = self.kappa / np.sqrt(self.feature_counts[self.last_state[0]])[self.last_action]
+            self.feature_counts[int(observation[0])] += 1
+            count_reward = self.kappa / np.sqrt(self.feature_counts[int(observation[0])])
 
-        td_target = reward + count_reward + self.gamma * self.q_values[observation[0]][action_choice]
-        td_error = td_target - self.q_values[self.last_state[0]][self.last_action]
+        td_target = reward + count_reward + self.gamma * self.q_values[int(observation[0])][action_choice]
+        td_error = td_target - self.q_values[int(self.last_state[0])][self.last_action]
         
-        self.q_values[self.last_state[0]][self.last_action] += self.alpha * td_error
+        self.q_values[int(self.last_state[0])][self.last_action] += self.alpha * td_error
 
         # self.q_values += count_reward
 
@@ -157,13 +163,13 @@ class Agent(BaseAgent):
         count_reward = 0
 
         if self.kappa:
-            self.feature_counts[self.last_state[0]] += 1
-            count_reward = self.kappa / np.sqrt(self.feature_counts[self.last_state[0]])[self.last_action]
+            self.feature_counts[-1] += 1
+            count_reward = self.kappa / np.sqrt(self.feature_counts[-1])
 
         td_target = reward + count_reward
-        td_error = td_target - self.q_values[self.last_state[0]][self.last_action]
+        td_error = td_target - self.q_values[int(self.last_state[0])][self.last_action]
         
-        self.q_values[self.last_state[0]][self.last_action] += self.alpha * td_error
+        self.q_values[int(self.last_state[0])][self.last_action] += self.alpha * td_error
 
         # self.q_values += count_reward
 

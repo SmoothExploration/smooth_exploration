@@ -45,7 +45,7 @@ def main(agent_info, agent_class, steps, filename):
     episode_end = []
     cum_reward = 0
 
-    max_steps = 100000
+    max_steps = 10000
     max_episodes = 1
 
     agent_info.update({"actions": env_class.actions})

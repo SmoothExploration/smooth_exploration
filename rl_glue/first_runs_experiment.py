@@ -78,7 +78,7 @@ if __name__ == '__main__':
     steps_ = int(sys.argv[-1])
     filename_ = "{}__{}__{epsilon}__{alpha}__{lambda}__{kappa}__{action_in_features}__{initialization_values}.dat"
     filename_ = filename_.format(agent_names[int(sys.argv[1])],
-                                 "floating-horsetrack",
+                                 "horsetrack",
                                  int(agent_info_['action_in_features']),
                                  **agent_info_)
 
