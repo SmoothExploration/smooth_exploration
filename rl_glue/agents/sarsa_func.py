@@ -9,6 +9,7 @@ import numpy as np
 
 from .agent import BaseAgent
 from .tilecode import Tilecoder
+from .state_aggregator import StateAggregator
 
 
 class Agent(BaseAgent):
