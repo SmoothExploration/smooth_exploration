@@ -19,7 +19,7 @@ import sys
 
 import numpy as np
 
-from environments import horsetrack_environment
+from environments import horsetrack_environment, horsetrack_environment_minus
 from rl_glue import RLGlue  # Required for RL-Glue
 from agents import random_agent
 from agents import sarsa_tabular
