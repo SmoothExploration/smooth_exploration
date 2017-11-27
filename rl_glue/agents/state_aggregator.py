@@ -27,11 +27,14 @@ class StateAggregator:
         self.num_active_features = 1
 
         if action_in_features:
-            self.num_features += len(actions)
+            self.num_actions = len(actions)
+            self.num_features += self.num_actions
             self.num_active_features += 1
 
     def get_features(self, observation):
-        return np.asarray(np.histogram(observation,
-                                       self.num_bins,
-                                       (self.min, self.max))[0],
-                          dtype=np.bool)
+        agg = np.asarray(np.histogram(observation,
+                                      self.num_bins,
+                                      (self.min, self.max))[0],
+                         dtype=np.bool)
+
+        return np.concatenate((agg, np.zeros(self.num_actions)))
