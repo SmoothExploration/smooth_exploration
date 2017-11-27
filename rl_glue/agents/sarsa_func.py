@@ -20,7 +20,8 @@ class Agent(BaseAgent):
         self.action_feature = None
 
         self.q_values = None
-        self.tilecoder = None
+        self.feature_generator = None
+        self.num_features = None
         self.feature_counts = None
 
         self.last_obs = None
@@ -41,20 +42,20 @@ class Agent(BaseAgent):
                              for i in self.actions}
         self.action_feature = agent_init_info['action_in_features']
 
-        self.tilecoder = Tilecoder(**agent_init_info)
+        self.feature_generator = StateAggregator(**agent_init_info)
         self.q_values = (np.ones((self.actions.size,
-                                  self.tilecoder.num_features)) *
+                                  self.feature_generator.num_features)) *
                          agent_init_info['initialization_values'])
 
         self.gamma = float(agent_init_info.get('gamma', 1.0))
         alpha0 = float(agent_init_info.get('alpha', 0.1))
-        self.alpha = alpha0 / self.tilecoder.num_active_features
+        self.alpha = alpha0 / self.feature_generator.num_active_features
         self.epsilon = float(agent_init_info.get('epsilon', 0))
         self.kappa = float(agent_init_info.get('kappa', 0))
         self.time = 0
 
         if self.kappa:
-            num_features = self.tilecoder.num_features
+            num_features = self.feature_generator.num_features
             if self.action_feature:
                 num_features -= self.actions.size
             self.feature_counts = np.ones((2, num_features))
@@ -74,7 +75,11 @@ class Agent(BaseAgent):
         """
 
         self.last_obs = observation
-        self.last_features = self.tilecoder.get_features(observation)
+        self.last_features = self.feature_generator.get_features(observation)
+
+        if self.kappa:
+            ind = -self.actions.size if self.action_feature else None
+            self.intrinsic_reward(self.last_features[:ind])
 
         self.last_action = np.random.choice(self.actions)
         self.time += 1
@@ -122,7 +127,7 @@ class Agent(BaseAgent):
         Returns:
             The action the agent is taking.
         """
-        features = self.tilecoder.get_features(observation)
+        features = self.feature_generator.get_features(observation)
 
         action = self.choose_action(features)
 

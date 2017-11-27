@@ -28,7 +28,8 @@ class BaseAgent:
         """The first method called when the experiment starts, called after
         the environment starts.
         Args:
-            observation (Numpy array): the state observation from the environment's evn_start function.
+            observation (Numpy array): the state observation from the
+                environment's evn_start function.
         Returns:
             The first action the agent takes.
         """
@@ -49,7 +50,8 @@ class BaseAgent:
     def agent_end(self, reward):
         """Run when the agent terminates.
         Args:
-            reward (float): the reward the agent received for entering the terminal state.
+            reward (float): the reward the agent received for entering the
+                terminal state.
         """
 
     @abstractmethod
