@@ -25,6 +25,7 @@ class StateAggregator:
         self.num_bins = num_bins
         self.num_features = num_bins
         self.num_active_features = 1
+        self.num_actions = 0
 
         if action_in_features:
             self.num_actions = len(actions)
@@ -37,4 +38,8 @@ class StateAggregator:
                                       (self.min, self.max))[0],
                          dtype=np.bool)
 
-        return np.concatenate((agg, np.zeros(self.num_actions)))
+        if self.num_actions:
+            return np.concatenate((agg, np.zeros(self.num_actions,
+                                                 dtype=np.bool)))
+        else:
+            return agg
