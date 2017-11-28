@@ -9,6 +9,7 @@ import numpy as np
 
 from .agent import BaseAgent
 from .tilecode import Tilecoder
+from .state_aggregator import StateAggregator
 
 
 class Agent(BaseAgent):
@@ -52,7 +53,7 @@ class Agent(BaseAgent):
         self.alpha = alpha0 / self.feature_generator.num_active_features
         self.epsilon = float(agent_init_info.get('epsilon', 0))
         self.kappa = float(agent_init_info.get('kappa', 0))
-        self.time = 0
+        self.time = 1
 
         if self.kappa:
             num_features = self.feature_generator.num_features
@@ -76,12 +77,15 @@ class Agent(BaseAgent):
 
         self.last_obs = observation
         self.last_features = self.feature_generator.get_features(observation)
+        self.last_action = np.random.choice(self.actions)
+
+        if self.action_feature:
+            self.last_features[-self.actions.size:] = self.actions == self.last_action
 
         if self.kappa:
             ind = -self.actions.size if self.action_feature else None
             self.intrinsic_reward(self.last_features[:ind])
 
-        self.last_action = np.random.choice(self.actions)
         self.time += 1
 
         return self.last_action

@@ -24,6 +24,8 @@ class Environment(BaseEnvironment):
         self.current_state = 0
         self.reward_obs_term = (reward, observation, termination)
         self.a_bar = 0
+        self.min_obs = -50
+        self.max_obs = 50
 
     def env_init(self, env_info={}):
         """Setup for the environment called when the experiment first starts.
@@ -34,6 +36,9 @@ class Environment(BaseEnvironment):
         """
         reward = 0  # reward is 0 at each time step
         self.current_state = np.array([0.])
+
+        self.min_obs = int(env_info.get('min_obs', -50))
+        self.max_obs = int(env_info.get('max_obs', 50))
 
         return reward, self.current_state, False
 
@@ -60,7 +65,7 @@ class Environment(BaseEnvironment):
         """
 
         self.current_state += action - 0.3 * self.a_bar
-        self.current_state %= 100
+        # self.current_state %= 100
 
         self.a_bar *= 0.8
         self.a_bar += 0.2 * action
@@ -69,7 +74,11 @@ class Environment(BaseEnvironment):
         terminal = False
 
         # Terminal state is 50, reward is 1.
-        if abs(self.current_state - 50) <= 0.5:
+        # if abs(self.current_state - 50) <= 0.5:
+        #     reward = 1
+        #     terminal = True
+
+        if abs(self.current_state) >= 50:
             reward = 1
             terminal = True
 

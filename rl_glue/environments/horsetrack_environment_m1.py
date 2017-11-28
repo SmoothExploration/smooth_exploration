@@ -20,6 +20,8 @@ class Environment(BaseEnvironment):
         termination = None
         self.current_state = np.asarray([0])
         self.reward_obs_term = (reward, observation, termination)
+        self.min_obs = -50
+        self.max_obs = 50
 
     def env_init(self, env_info={}):
         """Setup for the environment called when the experiment first starts.
@@ -31,6 +33,9 @@ class Environment(BaseEnvironment):
         reward = 0  # reward is 0 at each time step
         observation = np.asarray([0])  # Agent starts at state 0
         self.current_state = np.asarray([0])
+
+        self.min_obs = int(env_info.get('min_obs', -50))
+        self.max_obs = int(env_info.get('max_obs', 50))
 
         return reward, observation, False
 
@@ -59,19 +64,22 @@ class Environment(BaseEnvironment):
 
         self.current_state += action
 
-        # Go from 0 to 99
-        if self.current_state[0] == -1:
-            self.current_state = np.asarray([99])
+        # # Go from 0 to 99
+        # if self.current_state[0] == -1:
+        #     self.current_state = np.asarray([99])
 
-        # Go from 99 to 0
-        if self.current_state == 100:
-            self.current_state = np.asarray([0])
+        # # Go from 99 to 0
+        # if self.current_state == 100:
+        #     self.current_state = np.asarray([0])
 
         reward = -1
         terminal = False
 
         # Terminal state is 50, reward is 1.
-        if self.current_state[0] == 50:
+        # if self.current_state[0] == 50:
+        #     terminal = True
+
+        if self.current_state in [self.min_obs, self.max_obs]:
             terminal = True
 
         return reward, self.current_state, terminal

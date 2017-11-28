@@ -25,8 +25,8 @@ class RLGlue:
 
     def rl_init(self, agent_init_info={}, env_init_info={}):
         """Initial method called when RLGlue experiment is created"""
-        self.environment.env_init()
-        self.agent.agent_init(agent_init_info=agent_init_info)
+        self.environment.env_init(env_init_info)
+        self.agent.agent_init(agent_init_info)
 
         self.total_reward = 0.0
         self.num_steps = 0
@@ -123,6 +123,7 @@ class RLGlue:
             (float, state, action, Boolean): reward, last state observation,
                 last action, boolean indicating termination
         """
+
         (reward, last_state, term) = self.environment.env_step(self.last_action)
 
         self.total_reward += reward;

@@ -31,7 +31,9 @@ class Agent(BaseAgent):
         """Setup for the agent called when the experiment first starts."""
 
         self.actions = np.asarray(agent_init_info.get("actions", np.zeros(0)))
-        self.world_size = agent_init_info.get("world_size", 100)
+        self.min_obs = agent_init_info.get("min_obs", -50)
+        self.max_obs = agent_init_info.get("max_obs", 50)
+        self.world_size = self.max_obs - self.min_obs #agent_init_info.get("world_size", 100)
 
         self.q_values = np.ones(self.world_size * len(self.actions))\
                           .reshape(self.world_size, len(self.actions))\
@@ -51,6 +53,9 @@ class Agent(BaseAgent):
 
         self.filename = agent_init_info.get('filename', None)
 
+    def normalize_observation(self, observation):
+        return observation - self.min_obs
+
     def agent_start(self, observation, agent_start_info={}):
         """The first method called when the experiment starts, called after
         the environment starts.
@@ -60,6 +65,7 @@ class Agent(BaseAgent):
         Returns:
             The first action the agent takes.
         """
+        observation = self.normalize_observation(observation)
 
         self.track_actions = []
         self.track_q_values = []
@@ -68,13 +74,9 @@ class Agent(BaseAgent):
         self.track_feature_counts = []
 
         if np.random.random() < self.epsilon:
-            action_choice = np.random.int(2)
+            action_choice = np.random.randint(2)
             action = self.actions[action_choice]
         else:
-            # print(self.q_values[observation])
-            # print(self.q_values)
-            # print("HERE")
-            # print(observation)
             action_choice = np.random.choice(np.flatnonzero(self.q_values[int(observation[0])] == np.max(self.q_values[int(observation[0])])))
             action = self.actions[action_choice]
         
@@ -107,6 +109,7 @@ class Agent(BaseAgent):
         Returns:
             The action the agent is taking.
         """
+        observation = self.normalize_observation(observation)
 
         self.track_actions.append(self.last_action)
         q_copy = np.copy(self.q_values)
@@ -119,7 +122,7 @@ class Agent(BaseAgent):
         features = observation
 
         if np.random.random() < self.epsilon:
-            action_choice = np.random.int(2)
+            action_choice = np.random.randint(2)
             action = self.actions[action_choice]
         else:
             action_choice = np.random.choice(np.flatnonzero(self.q_values[int(observation[0])] == np.max(self.q_values[int(observation[0])])))
@@ -150,7 +153,7 @@ class Agent(BaseAgent):
         Args:
             reward (float): the reward the agent received for entering the
                 terminal state.
-        """
+        # """
 
         self.track_actions.append(self.last_action)
         q_copy = np.copy(self.q_values)
@@ -182,7 +185,7 @@ class Agent(BaseAgent):
         feature_copy = np.copy(self.feature_counts)
         self.track_feature_counts.append(feature_copy)
 
-        self.save_results()
+        # self.save_results()
 
         self.track_actions = None
         self.track_q_values = None
