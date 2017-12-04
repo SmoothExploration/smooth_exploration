@@ -35,6 +35,16 @@ class Agent(BaseAgent):
         self.kappa = None
         self.time = None
 
+        # for saving results
+        self.track_actions = None
+        self.track_q_values = None
+        self.track_states = None
+        self.track_reward = None
+        self.track_feature_counts = None
+        self.track_features = None
+        self.filename = None
+
+
     def agent_init(self, agent_init_info={}):
         """Setup for the agent called when the experiment first starts."""
 
@@ -62,6 +72,8 @@ class Agent(BaseAgent):
             self.feature_counts = np.ones((2, num_features))
             self.feature_counts *= 0.5
 
+        self.filename = agent_init_info.get('filename', None)
+
     def agent_start(self, observation, agent_start_info={}):
         """The first method called when the experiment starts, called after
         the environment starts.
@@ -74,6 +86,12 @@ class Agent(BaseAgent):
         Returns:
             The first action the agent takes.
         """
+        self.track_actions = []
+        self.track_q_values = []
+        self.track_states = []
+        self.track_reward = []
+        self.track_feature_counts = []
+        self.track_features = []
 
         self.last_obs = observation
         self.last_features = self.feature_generator.get_features(observation)
@@ -133,6 +151,21 @@ class Agent(BaseAgent):
         """
         features = self.feature_generator.get_features(observation)
 
+        copy_actions = np.copy(self.last_action)
+        self.track_actions.append(copy_actions)
+
+        copy_q = np.copy(self.q_values)
+        self.track_q_values.append(copy_q)
+
+        copy_states = np.copy(self.last_obs[0])
+        self.track_states.append(copy_states)
+
+        copy_rewards = np.copy(reward)
+        self.track_reward.append(copy_rewards)
+
+        copy_features = np.copy(self.last_features)
+        self.track_feature_counts.append(copy_features)
+
         action = self.choose_action(features)
 
         if self.action_feature:
@@ -167,6 +200,23 @@ class Agent(BaseAgent):
             reward (float): the reward the agent received for entering the
                 terminal state.
         """
+
+        copy_actions = np.copy(self.last_action)
+        self.track_actions.append(copy_actions)
+
+        copy_q = np.copy(self.q_values)
+        self.track_q_values.append(copy_q)
+
+        copy_states = np.copy(self.last_obs[0])
+        self.track_states.append(copy_states)
+
+        copy_rewards = np.copy(reward)
+        self.track_reward.append(copy_rewards)
+
+        copy_features = np.copy(self.last_features)
+        self.track_feature_counts.append(copy_features)
+
+
         int_reward = 0
         if self.kappa:
             ind = -self.actions.size if self.action_feature else None
@@ -181,9 +231,31 @@ class Agent(BaseAgent):
 
     def agent_cleanup(self):
         """Cleanup done after the agent ends."""
+
+        copy_actions = np.copy(self.last_action)
+        self.track_actions.append(copy_actions)
+
+        copy_q = np.copy(self.q_values)
+        self.track_q_values.append(copy_q)
+
+        copy_states = np.copy(self.last_obs[0])
+        self.track_states.append(copy_states)
+
+        copy_features = np.copy(self.last_features)
+        self.track_feature_counts.append(copy_features)
+
+        self.save_results()
+
         self.last_action = None
         self.last_obs = None
         self.last_features = None
+
+        self.track_actions = None
+        self.track_q_values = None
+        self.track_states = None
+        self.track_reward = None
+        self.track_feature_counts = None
+
 
     def agent_message(self, message):
         """A function used to pass information from the agent to the experiment.
@@ -195,3 +267,12 @@ class Agent(BaseAgent):
             The response (or answer) to the message.
         """
         pass
+
+    def save_results(self):
+        for name, result in [("actions", self.track_actions),
+                             ("q_values", self.track_q_values),
+                             ("states", self.track_states),
+                             ("rewards", self.track_reward),
+                             ("feature_counts", self.track_feature_counts)]:
+            filename = "data/save_runs/{}/{}".format(name, self.filename)
+            np.save(filename, result)
